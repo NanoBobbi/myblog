@@ -1,7 +1,7 @@
 import click
 from myblog import app, db
 from myblog.models import Article
-from myblog.fakes import fake_article
+from myblog.fakes import fake_article, fake_categories
 
 
 def register_commands():
@@ -17,5 +17,6 @@ def register_commands():
     @app.cli.command()
     def forge():
         db.create_all()
+        fake_categories(5)
         fake_article(20)
         click.echo('Done.')

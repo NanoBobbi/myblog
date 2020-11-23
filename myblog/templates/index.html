@@ -1,23 +1,39 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="row">
-    {% for article in articles %}
-    <div class="col-sm-6">
-        <div class="card">
-            {# <img src="../static/img/flower_5.jpg" alt="none" class="">#}
-            <!--            <img src="{{ url_for('static',filename='img/flower_5.jpg') }}" alt="none"-->
-            <!--                 class="card-img">-->
-            <div class="card-body">
-                <h3 class="card-title">{{ article.title|truncate(10) }}</h3>
-                <p class="card-text">{{ article.content|truncate(50) }}</p>
-            </div>
-            <div class="card-footer text-muted">
-                2 days ago
-            </div>
+    <header style="padding: 30px">
+        <h1>Bobby's blog</h1>
+        <h4 class="text-muted">Be different everyday</h4>
+    </header>
+    <div class="row">
+        <!--内容主体部分-->
+        <div class="col-md-8">
+            {% if not articles %}
+                <p>No article</p>
+            {% else %}
+                <link rel="stylesheet" href="../static/css/bootstrap.css">
+                <div class="row" style="padding: 0 30px">
+                    {% for article in articles %}
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h3 class="card-title"><a
+                                            href="{{ url_for('show_article',article_id=article.id) }}"
+                                            class="text-dark">{{ article.title|truncate(10) }}</a>
+                                    </h3>
+                                    <p class="card-text">{{ article.content|truncate(50) }}</p>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    <span>{{ article.timestamp }}</span>
+                                    <span class="float-right">{{ article.category.name }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
+        {% include 'aside.html' %}
     </div>
-    {% endfor %}
-</div>
-{% import 'pagination.html' as pg %}
-{{ pg.my_paginate(pagination, 'index') }}
+    {% import 'pagination.html' as pg %}
+    {{ pg.my_paginate(pagination, 'index') }}
 {% endblock %}

@@ -1,0 +1,22 @@
+<!--        {# 侧边栏 #}-->
+
+<aside class="col-md-4">
+    {% if not categories %}
+        <p>No category</p>
+    {% else %}
+        <div class="card mb-3">
+            <header class="card-header">Categories</header>
+            <ul class="list-group list-group-flush">
+                {% for category in categories %}
+                    <a href="{{ url_for('show_category', category_id=category.id) }}">
+                        <li class="list-group-item  list-group-item-action d-flex justify-content-between align-items-center">
+                            {{ category.name }}
+                            <span class="badge badge-primary badge-pill"> {{ category.articles|length }}</span>
+                        </li>
+                    </a>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+</aside>
+
