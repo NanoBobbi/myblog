@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>admin base</title>
+    <!--    <link rel="stylesheet" href="../../static/css/bootstrap.css">-->
+    <!--    <link rel="stylesheet" href="../../static/css/dashboard.css">-->
+    <link rel="stylesheet" href="../../static/layui/css/layui.css">
+        <link rel="stylesheet" href="../../static/css/style.css">
+
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo"><h2>我的博客管理系统</h2></div>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">文章</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="{{ url_for('all_articles') }}">全部文章</a></dd>
+                        <dd><a href="{{ url_for('add_article') }}">添加文章</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item ">
+                    <a class="" href="javascript:;">类型</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="{{ url_for('all_categories') }}">全部类型</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">用户</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;">修改密码</a></dd>
+                        <dd><a href="javascript:;">修改昵称</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="{{ url_for('index') }}">退出</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+<script src="../../static/layui/layui.all.js"></script>
+</body>
+</html>
