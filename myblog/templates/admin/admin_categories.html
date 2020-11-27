@@ -1,7 +1,7 @@
 {% extends 'admin/admin_base.html' %}
 {% block content %}
     <main class="layui-container">
-        <form method="post" action="">
+        <form method="post" action="{{ url_for('add_category') }}">
             <div class="layui-input-inline">
                 <input class="layui-input" type="text" value="category" name="category" autocomplete="off" required>
             </div>

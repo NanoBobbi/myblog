@@ -2,7 +2,7 @@
 {% block content %}
     <link rel="stylesheet" href="../../static/editormd/css/editormd.css">
 <main class="layui-container no-gutters">
-    <form class="layui-form" action="">
+    <form class="layui-form" action="{{ url_for('add_article') }}" method="post">
         <div class="layui-form-item">
             <label class="layui-form-label">输入框</label>
             <div class="layui-input-block">
@@ -13,7 +13,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">输入框</label>
             <div class="layui-input-block">
-                <input type="text" name="title" required lay-verify="required" placeholder="请输入类型，没有则添加" autocomplete="off"
+                <input type="text" name="category" required lay-verify="required" placeholder="请输入类型，没有则添加" autocomplete="off"
                        class="layui-input" value="{% if article %}{{ article.category.name }}{% endif %}">
             </div>
         </div>
@@ -23,7 +23,7 @@
             <div class="layui-input-block">
                 <div id="fancy-editormd" class="editormd">
 
-                    <textarea name="desc" placeholder="请选择类型"
+                    <textarea name="content" placeholder="请选择类型"
                               style="display: none;">{% if article %}{{ article.content }}{% endif %}</textarea>
                 </div>
             </div>
@@ -51,16 +51,16 @@
     });
 </script>
 
-{#<script>#}
-{#    //Demo#}
-{#    layui.use('form', function () {#}
-{#        var form = layui.form;#}
-{##}
-{#        //监听提交#}
-{#        form.on('submit(formDemo)', function (data) {#}
-{#            layer.msg(JSON.stringify(data.field));#}
-{#            return false;#}
-{#        });#}
-{#    });#}
-{#</script>#}
+<script>
+    //Demo
+    layui.use('form', function () {
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function (data) {
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+    });
+</script>
 {% endblock %}
