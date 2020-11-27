@@ -1,29 +1,49 @@
 {% extends 'admin/admin_base.html' %}
 {% block content %}
-    <ul class="movie-list">
-        <!-- 循环输出电影记录 -->
-        {% for article in articles %}
-            <li>
-                <span class="layui-badge layui-bg-cyan">{{ article.category.name }}</span>{{ article.title }}
-                <span class="float-right">
-                    {{ article.timestamp }}
-{#            {% if current_user.is_authenticated %}#}
-                    <!-- 以下两个按钮都在article的遍历中，所以可以获得article.id，在这个 if 语句中，判断当前用户登录状态，来是否显示这个两个按钮 -->
-                    <!-- 电影记录删除按钮 -->
-                <form action=" {{ url_for('delete_article', article_id=article.id) }} " method="post"
-                      class="inline-form">
-                <input type="submit" name="delete" value="Delete" onclick=" return confirm('Are you sure ?')"
-                       class="btn">
-            </form>
-                    <!-- 电影记录编辑按钮 -->
-                <a class="btn" href=" {{ url_for('edit_article', article_id=article.id) }} ">Edit</a>
-{#            {% endif %}#}
-        </span>
-            </li>
-        {% endfor %}
-    </ul>
-{% import 'pagination.html' as pg %}
-{{ pg.my_paginate(pagination, 'admin_articles') }}
+{#    <link rel="stylesheet" href="../../static/layui/css/layui.css">#}
+    <main class="layui-container">
+        <table class="layui-table" lay-even lay-size="lg">
+            <colgroup>
+                <col width="100">
+                <col width="100">
+{#                <col width="100">#}
+            </colgroup>
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>类型</th>
+                <th>标题</th>
+                <th>操作</th>
+                <th>时间</th>
+            </tr>
+            </thead>
+            {% if  articles %}
+                {% for article in articles %}
+                    <tr>
+                        <td>{{ article.id }}</td>
+                        <td>{{ article.category.name }}</td>
+                        <td>{{ article.title }}</td>
+                        <td>
+                            <form action=" {{ url_for('delete_article', article_id=article.id) }} " method="post"
+                                  class="inline-form">
+                                <input type="submit" name="delete" value="Delete"
+                                       onclick=" return confirm('Are you sure ?')"
+                                       class="btn">
+                            </form>
+                            <form action=" {{ url_for('edit_article', article_id=article.id) }} " method="post"
+                                  class="inline-form">
+                                <input type="submit" name="eidt" value="edit"
+                                       class="btn">
+                            </form>
+                        </td>
+                        <td>{{ article.timestamp }}</td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </table>
+    </main>
+    {% import 'pagination.html' as pg %}
+    {{ pg.my_paginate(pagination, 'admin_articles') }}
     {#<table class="layui-table layui-hide" lay-even lay-size="lg" id="demo">#}
     {#    <colgroup>#}
     {#        <col width="100">#}

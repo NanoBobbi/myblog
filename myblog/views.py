@@ -1,8 +1,12 @@
+from datetime import datetime, timezone
+
 import click
+from click import echo
 from flask import render_template, url_for, request, redirect
+from flask_login import login_required
 from sqlalchemy.exc import IntegrityError
 
-from myblog.models import Article, Category
+from myblog.models import Article, Category, User
 from myblog import app, db
 from flask_sqlalchemy import SQLAlchemy, Model
 
@@ -37,7 +41,7 @@ def show_category(category_id):
 
 @app.route('/admin')
 def admin_index(string=None):
-    return render_template('admin/admin_index.html', string="hello")
+    return render_template('admin/admin_index.html', string="hello, None")
 
 
 @app.route('/admin/admin_categories')
@@ -63,6 +67,13 @@ def add_category():
     return redirect(url_for('admin_categories'))
 
 
+@app.route('/admin/delete_category/<int:category_id>', methods=['POST'])
+def delete_category(category_id):
+    category = Category.query.get_or_404(category_id)
+    category.delete()
+    return render_template('admin/admin_index.html', string="Delete category successfully!")
+
+
 @app.route('/admin/admin_articles')
 def admin_articles():
     # articles = Article.query.all()
@@ -84,18 +95,52 @@ def delete_article(article_id):
 
 @app.route('/admin/add_article', methods=['POST', 'GET'])
 def add_article():
+    categories = Category.query.all()
     if request.method == 'POST':
         title = request.form['title']
-        category = request.form['category']
+        category_id = request.form['category_id']
         content = request.form['content']
-        article = Article(title=title, category=category, content=content)
+        echo(title)
+        article = Article(title=title, category_id=category_id, content=content)
         db.session.add(article)
         db.session.commit()
         return render_template('admin/admin_index.html', string="Add article successfully!")
-    return render_template('admin/add_article.html')
+    return render_template('admin/add_article.html', categories=categories)
 
 
 @app.route('/admin/edit/<int:article_id>', methods=['POST', 'GET'])
 def edit_article(article_id):
     article = Article.query.get_or_404(article_id)
-    return render_template('admin/add_article.html', article=article)
+    categories = Category.query.all()
+    if request.method == 'POST':
+        article.title = request.form['title']
+        article.category_id = request.form['category_id']
+        article.title = request.form['title']
+        article.timestamp = datetime.now()
+        db.session.commit()
+    return render_template('admin/add_article.html', article=article, categories=categories)
+
+
+@app.route('/admin/login', methods=['POST', 'GET'])
+def login():
+    from flask_login import current_user
+    if not current_user.is_authenticated:
+        if request.method == 'POST':
+            username = request.form['username']
+            password = request.form['password']
+            user = User.query.first()
+            if user.userName == username and user.password == password:
+                from flask_login import login_user
+                login_user(user)
+                return render_template('admin/admin_index.html', string="hello %s" % username)
+    else:
+        return render_template('admin/admin_index.html', string="hello again ")
+    return render_template('admin/login.html')
+
+
+@app.route('/admin/logout')
+# @login_required
+def logout():
+    from flask_login import logout_user
+    logout_user()
+    return render_template('admin/login.html')

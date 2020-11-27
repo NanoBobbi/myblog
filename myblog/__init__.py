@@ -1,10 +1,11 @@
+# import flask_login
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 import sys
 import os
 
-# 寻找跟目录
+# 寻找根目录
 basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 # 实例化 一个app
 app = Flask(__name__)
@@ -26,6 +27,9 @@ app.config['SECRET_KEY'] = 'dev'
 
 # 实例化 一个数据库连接
 db = SQLAlchemy(app)
+Login_manager = LoginManager(app)
+Login_manager.init_app(app)
+Login_manager.login_view = 'admin/login'
 # login_manager = LoginManager(app)
 # login_manager.login_view = 'login'
 
@@ -48,8 +52,18 @@ db = SQLAlchemy(app)
 
 
 from myblog.commands import register_commands
+
 # 注册所有的终端命令，每次开启前都需要在终端输入命令export FLASK_APP=myblog 才能奏效
 
 register_commands()
 # 避免循环依赖
 from myblog import commands, models, views
+
+
+@Login_manager.user_loader
+def user_loader(user_id):
+    users = models.User.query.all()
+    for user in users:
+        if user.id == user_id:
+            return user_id
+    return None
