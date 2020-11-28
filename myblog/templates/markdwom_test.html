@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/editormd/css/editormd.min.css">
+
+</head>
+<body>
+1
+<div id="View">
+                <textarea id="append-test" >
+###科学公式 TeX(KaTeX)
+
+$$E=mc^2$$
+
+行内的公式$$E=mc^2$$行内的公式，行内的$$E=mc^2$$公式。
+
+$$\(\sqrt{3x-1}+(1+x)^2\)$$
+
+$$\sin(\alpha)^{\theta}=\sum_{i=0}^{n}(x^i + \cos(f))$$
+
+$$X^2 > Y$$
+
+#####上标和下标
+
+上标：X&lt;sup&gt;2&lt;/sup&gt;
+
+下标：O&lt;sub&gt;2&lt;/sub&gt;
+
+##### 代码块里包含的过滤标签及属性不会被过滤
+                </textarea>
+</div>
+
+<script src="../static/js/jquery-3.5.1.min.js"></script>
+<script src="../static/editormd/editormd.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $.get(function () {
+            var testEditormdView = editormd.markdownToHTML({
+                id: "View",
+                path: "../static/editormd/lib/"
+            });
+
+        });
+    });
+</script>
+</body>
+</html>

@@ -30,7 +30,7 @@
                                        onclick=" return confirm('Are you sure ?')"
                                        class="btn">
                             </form>
-                            <form action=" {{ url_for('edit_article', article_id=article.id) }} " method="post"
+                            <form action=" {{ url_for('edit_article', article_id=article.id) }} " method="get"
                                   class="inline-form">
                                 <input type="submit" name="eidt" value="edit"
                                        class="btn">

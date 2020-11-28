@@ -3,7 +3,14 @@
     <link rel="stylesheet" href="../../static/layui/css/layui.css">
     <link rel="stylesheet" href="../../static/editormd/css/editormd.css">
     <main class="layui-container no-gutters">
-        <form class="layui-form" action="{{ url_for('add_article') }}" method="post">
+        <form class="layui-form"
+              action="
+                        {% if article %}
+                        {{ url_for('edit_article',article_id=article.id) }}
+                        {% else %}
+                        {{ url_for('add_article') }}
+                        {% endif %}
+                        " method="post">
             <div class="layui-form-item">
                 <label class="layui-form-label">输入框</label>
                 <div class="layui-input-block">
@@ -17,9 +24,9 @@
                     <label class="layui-form-label">选择框</label>
                     <div class="layui-input-block">
                         <select name="category_id" lay-verify="required">
-                        {% for category in categories %}
-                            <option value="{{ category.id }}">{{ category.name }}</option>
-                        {% endfor %}
+                            {% for category in categories %}
+                                <option value="{{ category.id }}">{{ category.name }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>

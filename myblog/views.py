@@ -115,9 +115,10 @@ def edit_article(article_id):
     if request.method == 'POST':
         article.title = request.form['title']
         article.category_id = request.form['category_id']
-        article.title = request.form['title']
+        article.content = request.form['content']
         article.timestamp = datetime.now()
         db.session.commit()
+        return render_template('admin/admin_index.html', string="edit successfully")
     return render_template('admin/add_article.html', article=article, categories=categories)
 
 
