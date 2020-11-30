@@ -6,12 +6,25 @@
     <link rel="stylesheet" href="../../static/css/bootstrap.css">
     <!--    <link rel="stylesheet" href="../../static/css/dashboard.css">-->
     <link rel="stylesheet" href="../../static/layui/css/layui.css">
-    <link rel="stylesheet" href="../../static/css/style.css">
+    <style>
+        .my-alert{
+            position: absolute;
+            left: 300px;
+            top: 7px;
+        }
+    </style>
 </head>
-<body class="layui-layout-body">
+<body>
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
         <div class="layui-logo"><h3 class="h3" style="padding-top: 10px">后台管理系统</h3></div>
+        {% with messages = get_flashed_messages() %}
+         {% if messages %}
+               {% for message in messages %}
+                    <div class="alert alert-success w-50 my-alert">{{ message }}</div>
+               {% endfor %}
+         {% endif %}
+    {% endwith %}
     </div>
 
     <div class="layui-side layui-bg-black">

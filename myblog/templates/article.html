@@ -3,7 +3,8 @@
 {% block content %}
     <header style="padding: 30px">
         <h1>{{ article.title }}</h1>
-        <h4 class="text-muted">{{ article.timestamp }}</h4>
+        <h5 class="text-muted">类型：{{article.category.name}} <br>
+            {{ article.timestamp }}</h5>
     </header>
     <main class="row">
         <div class="col-md-8">

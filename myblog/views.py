@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 
 import click
 from click import echo
-from flask import render_template, url_for, request, redirect
+from flask import render_template, url_for, request, redirect, flash
 from flask_login import login_required
 from sqlalchemy.exc import IntegrityError
 
@@ -64,6 +64,7 @@ def add_category():
             db.session.commit()
         except IntegrityError:
             db.session.rollback()
+    flash("Add category succeed!")
     return redirect(url_for('admin_categories'))
 
 
@@ -71,6 +72,7 @@ def add_category():
 def delete_category(category_id):
     category = Category.query.get_or_404(category_id)
     category.delete()
+    flash("Delete category succeed!")
     return render_template('admin/admin_index.html', string="Delete category successfully!")
 
 
@@ -89,7 +91,7 @@ def delete_article(article_id):
     article = Article.query.get_or_404(article_id)
     db.session.delete(article)
     db.session.commit()
-    # flash("dele")
+    flash("Delete article succeed!")
     return redirect(url_for("admin_articles"))
 
 
@@ -104,6 +106,7 @@ def add_article():
         article = Article(title=title, category_id=category_id, content=content)
         db.session.add(article)
         db.session.commit()
+        flash("Add article succeed!")
         return render_template('admin/admin_index.html', string="Add article successfully!")
     return render_template('admin/add_article.html', categories=categories)
 
@@ -118,6 +121,7 @@ def edit_article(article_id):
         article.content = request.form['content']
         article.timestamp = datetime.now()
         db.session.commit()
+        flash("Edit article succeed!")
         return render_template('admin/admin_index.html', string="edit successfully")
     return render_template('admin/add_article.html', article=article, categories=categories)
 
@@ -133,8 +137,14 @@ def login():
             if user.userName == username and user.password == password:
                 from flask_login import login_user
                 login_user(user)
+                flash('Logged Succeed!')
                 return render_template('admin/admin_index.html', string="hello %s" % username)
+            else:
+                flash('Invalid username or password!')
+                return render_template('admin/login.html')
+
     else:
+        flash('Welcome back')
         return render_template('admin/admin_index.html', string="hello again ")
     return render_template('admin/login.html')
 
@@ -144,4 +154,5 @@ def login():
 def logout():
     from flask_login import logout_user
     logout_user()
+    flash("Logout!")
     return render_template('admin/login.html')
